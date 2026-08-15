@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 # Flask config
 app.config["SECRET_KEY"] = "]'/[;.[__-]]"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:dima2902@localhost:5432/restauraunt'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password1234@localhost:5432/pizzeria'
 
 db.init_app(app)
 
@@ -24,8 +24,8 @@ def apply_csp(response):
     nonce = secrets.token_urlsafe(16)
     csp = (
         f"default-src 'self'; "
-        f"script-src 'self' 'nonce-{nonce}'; "
-        f"style-src 'self'; "
+        f"script-src 'self' 'nonce-{nonce}' https://cdn.jsdelivr.net; "
+        f"style-src 'self' https://cdn.jsdelivr.net; "
         f"frame-ancestors 'none'; "
         f"base-uri 'self'; "
         f"form-action 'self'"

@@ -1,1 +1,56 @@
-<h1>Welcome to restauraunt, {{ current_user.username }}</h1>
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="mb-4">Welcome to our pizzeria, {{ current_user.username }}</h1>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/four-cheese-pizza.jpg') }}" width="350">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">
+                        This is a wider card with supporting text below as a natural
+                        lead-in to additional content. This content is a little bit longer.
+                    </p>
+                    <p class="card-text">
+                        <big class="text-body">Only for __ !</big>
+                    </p>
+                </div>
+                <button class="btn p-1 bg-success" href="/order">
+                    <img src="{{ url_for('static', filename='images/cart.png') }}"
+                        alt="cart"
+                        width="35">
+                </button>
+            </div>
+        </div>
+
+        
+        <div class="col-md-6">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/Pepperoni-and-Peppers-Pizza.jpg') }}" width="400">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">
+                        This is a wider card with supporting text below as a natural
+                        lead-in to additional content. This content is a little bit longer.
+                    </p>
+                    <p class="card-text">
+                        <big class="text-body">Only for __ !</big>
+                    </p>
+                </div>
+                <button class="btn p-1 bg-success" href="/order">
+                    <img src="{{ url_for('static', filename='images/cart.png') }}"
+                        alt="cart"
+                        width="35">
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

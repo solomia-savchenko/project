@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}base html{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+
+        <a class="navbar-brand text-white">Pizzeria Mama-Mia</a>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <button class="btn p-1 bg-secondary">
+                <img src="{{ url_for('static', filename='images/user.png') }}"
+                     alt="user"
+                     width="35">
+            </button>
+
+            <button class="btn p-1 bg-secondary">
+                <img src="{{ url_for('static', filename='images/cart.png') }}"
+                     alt="cart"
+                     width="35">
+            </button>
+
+            <button class="navbar-toggler bg-secondary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+        </div>
+
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link text-white" href="/">Home</a>
+                <a class="nav-link text-white" href="/menu">Menu</a>
+            </div>
+        </div>
+
+    </div>
+</nav>
+    {% block content %}
+    {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
