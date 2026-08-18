@@ -136,6 +136,33 @@ def order():
 
     return render_template("order.html", bucket=bucket, csrf_token=session["csrf_token"])
 
+@app.route("/admin_orders", methods=["GET","POST"])
+@login_required
+def admin_orders():
+    if not current_user.username == "admin":
+        return "помилка тільки для адмінів!"
+    all_orders = Order.query.filter_by(status=False).all()
+    if not all_orders:
+        return "немає замовлень"
+    if request.method == "POST":
+        if request.form.get("csrf_token") != session.get("csrf_token"):
+            return "Request blocked", 403
+        order_id = request.form.get("order_id")
+        current_order = Order.query.filter_by(id=order_id).first()
+        current_order.status = True
+
+        db.session.commit()
+        return redirect(url_for("home"))
+    return render_template("admin_orders.html", all_orders=all_orders, csrf_token=session["csrf_token"])
+
+@app.route("/my_orders")
+@login_required
+def my_orders():
+    my_orders = Order.query.filter_by(status=False, user_id=current_user.id).all()
+    if not my_orders:
+        return "немає замовлень"
+    return render_template("my_orders.html", my_orders=my_orders)
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
