@@ -3,12 +3,39 @@
 {% block content %}
 </head>
 <body>
-    {% for item in all_positions %}
-        <h4>{{item.name}} - {{item.price}}₴ <a href="{{ url_for('position', name=item.name) }}">View</a></h4>
-        <p>{{item.description}}</p>
-    {% else %}
-        <h1>No positions yet</h1>
-    {% endfor %}
+    <div class="row g-4">
+
+        {% for item in all_positions %}
+        <div class="col-md-6">
+            <div class="card h-100">
+                <img src="{{ url_for('static', filename='images/' + item.image_url) }}"
+                    width="350"
+                    class="d-block mx-auto"
+                    alt="{{ item.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{item.name}}<a href="{{ url_for('position', name=item.name) }}"></a></h5>
+                    <p class="card-text">
+                        <p>{{item.description}}</p>
+                    </p>
+                    <p class="card-text">
+                        <big class="text-body">{{item.price}}₴</big>
+                    </p>
+                </div>
+                <form action="{{ url_for('position', name=item.name) }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ session['csrf_token'] }}">
+                    <input type="hidden" name="ammount" value="1">
+
+                    <button type="submit" class="btn p-1 bg-success">
+                        <img src="{{ url_for('static', filename='images/cart.png') }}"
+                            alt="cart"
+                            width="35">
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+            <h1>No positions yet</h1>
+        {% endfor %}
 </body>
 </html>
 {% endblock%}

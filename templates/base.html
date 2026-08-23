@@ -13,17 +13,17 @@
 
         <div class="d-flex align-items-center gap-2">
 
-            <button class="btn p-1 bg-secondary">
+            <a href="/user" class="btn p-1 bg-secondary">
                 <img src="{{ url_for('static', filename='images/user.png') }}"
                      alt="user"
                      width="35">
-            </button>
+            </a>
 
-            <button class="btn p-1 bg-secondary">
+            <a href="/bucket" class="btn p-1 bg-secondary">
                 <img src="{{ url_for('static', filename='images/cart.png') }}"
-                     alt="cart"
-                     width="35">
-            </button>
+                    alt="cart"
+                    width="35">
+            </a>
 
             <button class="navbar-toggler bg-secondary"
                     type="button"
@@ -46,6 +46,22 @@
 
     </div>
 </nav>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show m-3" role="alert">
+                {{ message }}
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert"
+                        aria-label="Close">
+                </button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
     {% block content %}
     {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
