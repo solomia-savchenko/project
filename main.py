@@ -1,7 +1,7 @@
 import datetime
 import secrets
 from flask import Flask, redirect, render_template, request, session, url_for, flash
-from flask_login import LoginManager, current_user, login_required, login_user
+from flask_login import LoginManager, current_user, login_required, login_user,  logout_user
 from models import Order, Pizza, User, db
 
 app = Flask(__name__)
@@ -39,6 +39,21 @@ def ensure_csrf_token():
 @login_manager.user_loader
 def load_user(user_id):
     return db.session.get(User, int(user_id))
+
+@app.route("/user")
+@login_required
+def profile():
+    return render_template(
+        "user.html",
+        user=current_user,
+        my_orders=current_user.orders
+    )
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
 
 @app.route("/")
 def home():

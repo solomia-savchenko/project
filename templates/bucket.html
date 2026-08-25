@@ -16,9 +16,12 @@
                     <div class="row align-items-center">
 
                         {% if item.pizza.image_url %}
-                            <img src="{{ url_for('static', filename='images/' + item.pizza.image_url) }}"
-                                alt="{{ item.pizza.name }}"
-                                class="img-fluid">
+                            <div class="col-md-3">
+                                <img src="{{ url_for('static', filename='images/' + item.pizza.image_url) }}"
+                                     alt="{{ item.pizza.name }}"
+                                     width="250"
+                                     class="img-fluid">
+                            </div>
                         {% endif %}
 
                         <div class="col-md-3">
@@ -52,15 +55,13 @@
 
                         </div>
 
-                        <!-- Total for this pizza -->
                         <div class="col-md-2">
                             <strong>
                                 {{ item.total }} ₴
                             </strong>
                         </div>
 
-                        <!-- Remove -->
-                        <div class="col-md-2">
+                        <div class="col-md-1">
 
                             <form action="{{ url_for('remove_from_bucket', name=item.pizza.name) }}"
                                   method="POST">
@@ -82,8 +83,6 @@
         {% endfor %}
 
 
-        <!-- Overall total -->
-
         <div class="card mt-4">
             <div class="card-body text-end">
 
@@ -91,12 +90,13 @@
                     Total: {{ total }} ₴
                 </h3>
 
-                <button class="btn btn-success">
+                <a class="btn btn-success" href="/order">
                     Order
-                </button>
+                </a>
 
             </div>
         </div>
+
 
     {% else %}
 
