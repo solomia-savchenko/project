@@ -1,6 +1,6 @@
 import datetime
 import secrets
-from flask import Flask, redirect, render_template, request, session, url_for
+from flask import Flask, redirect, render_template, request, session, url_for, abort
 from flask_login import LoginManager, current_user, login_required, login_user
 from models import Order, Pizza, User, db
 
@@ -76,7 +76,7 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
-        login_user(new_user)  # Виправлено помилку: авторизуємо новоствореного new_user
+        login_user(new_user)
         return redirect(url_for("home"))
 
     return render_template("register.html")
@@ -132,36 +132,43 @@ def order():
         db.session.add(new_order)
         db.session.commit()
         session.pop("bucket", None)
-        return redirect(url_for("home"))
+        return redirect(url_for("my_orders"))
 
     return render_template("order.html", bucket=bucket, csrf_token=session["csrf_token"])
 
-@app.route("/admin_orders", methods=["GET","POST"])
-@login_required
-def admin_orders():
-    if not current_user.username == "admin":
-        return "помилка тільки для адмінів!"
-    all_orders = Order.query.filter_by(status=False).all()
-    if not all_orders:
-        return "немає замовлень"
-    if request.method == "POST":
-        if request.form.get("csrf_token") != session.get("csrf_token"):
-            return "Request blocked", 403
-        order_id = request.form.get("order_id")
-        current_order = Order.query.filter_by(id=order_id).first()
-        current_order.status = True
-
-        db.session.commit()
-        return redirect(url_for("home"))
-    return render_template("admin_orders.html", all_orders=all_orders, csrf_token=session["csrf_token"])
 
 @app.route("/my_orders")
 @login_required
 def my_orders():
-    my_orders = Order.query.filter_by(status=False, user_id=current_user.id).all()
-    if not my_orders:
-        return "немає замовлень"
-    return render_template("my_orders.html", my_orders=my_orders)
+
+    user_orders = Order.query.filter_by(user_id=current_user.id).order_by(Order.order_time.desc()).all()
+    return render_template("my_orders.html", orders=user_orders)
+
+@app.route("/admin_orders", methods=["GET", "POST"])
+@login_required
+def admin_orders():
+    if current_user.username != "admin":
+        return "Помилка: доступ лише для адміністраторів!", 403
+
+    if request.method == "POST":
+        if request.form.get("csrf_token") != session.get("csrf_token"):
+            return "Request blocked", 403
+
+        order_id = request.form.get("order_id")
+        action = request.form.get("action")
+        current_order = db.session.get(Order, int(order_id))
+
+        if current_order:
+            if action == "complete":
+                current_order.status = True  
+            elif action == "delete":
+                db.session.delete(current_order)  
+            
+            db.session.commit()
+        return redirect(url_for("admin_orders"))
+
+    all_orders = Order.query.order_by(Order.status.asc(), Order.order_time.desc()).all()
+    return render_template("admin_orders.html", all_orders=all_orders, csrf_token=session["csrf_token"])
 
 if __name__ == "__main__":
     with app.app_context():
