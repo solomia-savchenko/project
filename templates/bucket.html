@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1 class="mb-4">Shopping Bucket</h1>
+
+    {% if pizzas %}
+
+        {% for item in pizzas %}
+
+            <div class="card mb-3">
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                        {% if item.pizza.image_url %}
+                            <div class="col-md-3">
+                                <img src="{{ url_for('static', filename='images/' + item.pizza.image_url) }}"
+                                     alt="{{ item.pizza.name }}"
+                                     width="250"
+                                     class="img-fluid">
+                            </div>
+                        {% endif %}
+
+                        <div class="col-md-3">
+                            <h4>{{ item.pizza.name }}</h4>
+                            <p>{{ item.pizza.price }} ₴ / pcs.</p>
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <form action="{{ url_for('update_bucket', name=item.pizza.name) }}"
+                                  method="POST">
+
+                                <label>Quantity:</label>
+
+                                <div class="input-group">
+
+                                    <input type="number"
+                                           name="amount"
+                                           value="{{ item.amount }}"
+                                           min="1"
+                                           class="form-control">
+
+                                    <button type="submit"
+                                            class="btn btn-secondary">
+                                        Update
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <div class="col-md-2">
+                            <strong>
+                                {{ item.total }} ₴
+                            </strong>
+                        </div>
+
+                        <div class="col-md-1">
+
+                            <form action="{{ url_for('remove_from_bucket', name=item.pizza.name) }}"
+                                  method="POST">
+
+                                <button type="submit"
+                                        class="btn btn-danger">
+                                    Remove
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        {% endfor %}
+
+
+        <div class="card mt-4">
+            <div class="card-body text-end">
+
+                <h3>
+                    Total: {{ total }} ₴
+                </h3>
+
+                <a class="btn btn-success" href="/order">
+                    Order
+                </a>
+
+            </div>
+        </div>
+
+
+    {% else %}
+
+        <div class="alert alert-secondary">
+            Your shopping bucket is empty.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
