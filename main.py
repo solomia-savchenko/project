@@ -43,10 +43,15 @@ def load_user(user_id):
 @app.route("/user")
 @login_required
 def profile():
+    my_orders = Order.query.filter_by(
+        user_id=current_user.id,
+        status=False
+    ).all()
+
     return render_template(
         "user.html",
         user=current_user,
-        my_orders=current_user.orders
+        my_orders=my_orders
     )
 
 @app.route("/logout")
