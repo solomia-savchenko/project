@@ -170,23 +170,42 @@ def remove_from_bucket(name):
     return redirect(url_for("bucket"))
 
 @app.route("/position/<name>", methods=["GET", "POST"])
+@login_required
 def position(name):
+
     if request.method == "POST":
+
         if request.form.get("csrf_token") != session.get("csrf_token"):
             return "Request blocked", 403
 
-        ammount = request.form.get("ammount")
+        amount = request.form.get("ammount", "1")
+
+        pizza = Pizza.query.filter_by(name=name).first()
+
+        if not pizza:
+            return f"Pizza '{name}' not found", 404
 
         bucket = session.get("bucket", {})
-        bucket[name] = ammount
+
+        bucket[name] = amount
+
         session["bucket"] = bucket
+        session.modified = True
 
         flash(f"{name} added to your bucket!", "success")
 
         return redirect(url_for("menu"))
 
     position = Pizza.query.filter_by(name=name).first()
-    return render_template("position.html", csrf_token=session["csrf_token"], position=position)
+
+    if not position:
+        return f"Pizza '{name}' not found", 404
+
+    return render_template(
+        "position.html",
+        csrf_token=session["csrf_token"],
+        position=position
+    )
 
 @app.route("/order", methods=["GET", "POST"])
 @login_required

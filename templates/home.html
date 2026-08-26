@@ -1,62 +1,129 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1></h1>
-<div class="container">
-    <h1 class="mb-4">Welcome to our pizzeria, {{ current_user.username }}</h1>
 
-    <h3>Our famous Pizzas for you!</h3>
+<div class="container mt-4">
+
+    <h1 class="mb-4">
+        Welcome to our pizzeria, {{ current_user.username }}
+    </h1>
+
+    <h3 class="mb-4">Our famous Pizzas for you!</h3>
 
     <div class="row g-4">
 
+        <!-- FOUR CHEESES -->
         <div class="col-md-6">
             <div class="card h-100">
+
                 <img src="{{ url_for('static', filename='images/four-cheese-pizza.jpg') }}"
-                    width="350"
-                    class="d-block mx-auto">
+                     width="350"
+                     class="d-block mx-auto"
+                     alt="Four Cheeses">
+
                 <div class="card-body">
-                    <h5 class="card-title">Pizza 4 Cheese</h5>
+
+                    <h5 class="card-title">
+                        Pizza 4 Cheese
+                    </h5>
+
                     <p class="card-text">
-                        Our Four Cheese Pizza is a favorite for true cheese lovers. 
-                        Four delicious cheeses melt together into a rich, creamy combination with a golden, irresistible crust.
+                        Our Four Cheese Pizza is a favorite for true cheese lovers.
+                        Four delicious cheeses melt together into a rich, creamy
+                        combination with a golden, irresistible crust.
                     </p>
+
                     <p class="card-text">
-                        <big class="text-body">Only for __ !</big>
+                        <big class="text-body">
+                            Only for 260₴!
+                        </big>
                     </p>
+
                 </div>
-                <a class="btn p-1 bg-success" href="/order">
-                    <img src="{{ url_for('static', filename='images/cart.png') }}"
-                        alt="cart"
-                        width="35">
-                </a>
+
+                <form action="{{ url_for('position', name='Four Cheeses') }}"
+                      method="POST">
+
+                    <input type="hidden"
+                           name="csrf_token"
+                           value="{{ session['csrf_token'] }}">
+
+                    <input type="hidden"
+                           name="ammount"
+                           value="1">
+
+                    <button type="submit"
+                            class="btn p-1 bg-success">
+
+                        <img src="{{ url_for('static', filename='images/cart.png') }}"
+                             alt="cart"
+                             width="35">
+
+                    </button>
+
+                </form>
+
             </div>
         </div>
 
-        
+
+        <!-- PEPPERONI AND PEPPERS -->
         <div class="col-md-6">
             <div class="card h-100">
+
                 <img src="{{ url_for('static', filename='images/Pepperoni-and-Peppers-Pizza.jpg') }}"
-                    class="d-block mx-auto"
-                    width="350">
+                     width="350"
+                     class="d-block mx-auto"
+                     alt="Pepperoni and Peppers">
+
                 <div class="card-body">
-                    <h5 class="card-title">Pepperoni & Pepper Pizza</h5>
+
+                    <h5 class="card-title">
+                        Pepperoni & Pepper Pizza
+                    </h5>
+
                     <p class="card-text">
-                        Our Pepperoni & Pepper Pizza is a true favorite among fans of bold flavors.
-                        Spicy peppers, savory pepperoni, and gooey cheese come together in a combination that’s hard to resist after the first bite.
+                        Our Pepperoni & Pepper Pizza is a true favorite among
+                        fans of bold flavors. Spicy peppers, savory pepperoni,
+                        and gooey cheese come together in a combination that’s
+                        hard to resist after the first bite.
                     </p>
+
                     <p class="card-text">
-                        <big class="text-body">Only for __ !</big>
+                        <big class="text-body">
+                            Only for 270₴!
+                        </big>
                     </p>
+
                 </div>
-                <a class="btn p-1 bg-success" href="/order">
-                    <img src="{{ url_for('static', filename='images/cart.png') }}"
-                        alt="cart"
-                        width="35">
-                </a>
+
+                <form action="{{ url_for('position', name='Pepperoni and Peppers') }}"
+                      method="POST">
+
+                    <input type="hidden"
+                           name="csrf_token"
+                           value="{{ session['csrf_token'] }}">
+
+                    <input type="hidden"
+                           name="ammount"
+                           value="1">
+
+                    <button type="submit"
+                            class="btn p-1 bg-success">
+
+                        <img src="{{ url_for('static', filename='images/cart.png') }}"
+                             alt="cart"
+                             width="35">
+
+                    </button>
+
+                </form>
+
             </div>
         </div>
 
     </div>
+
 </div>
 
 {% endblock %}
