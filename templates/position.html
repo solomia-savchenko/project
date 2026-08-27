@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+</head>
+<body>
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <input type="hidden" name="name" value="{{ position.name }}">
+        <input type="number" value="1" min="1" name="ammount">
+        <button type="submit">Add to bucket</button>
+    </form>
+</body>
+</html>
+{% endblock %}
